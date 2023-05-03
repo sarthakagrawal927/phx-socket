@@ -25,6 +25,6 @@ mix phx.gen.channel Bestmove
 ```
 
 To run:
-```iex -S mix phx.server```
+```iex -S mix phx.server
   MovesWeb.Endpoint.broadcast("bestmove:lobby", "new_move", "message")
 ```
