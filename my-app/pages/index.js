@@ -7,7 +7,7 @@ const App = () => {
   // connect to the channel via our hook
   // the channel name is defined by the server
 
-  const [activeMessage, setActiveMessage] = useState(null);
+  const [activeMessages, setActiveMessages] = useState([]);
 
   // listening for messages from the channel
   useEffect(() => {
@@ -18,16 +18,20 @@ const App = () => {
     channel.join()
 
     channel.on("new_move", payload => {
-      setActiveMessage(payload.message);
+      // next rerenders everything twice during development mode
+      setActiveMessages((activeMessages) => [payload, ...activeMessages]);
       channel.push("registered", {client: "process.pid"})
     })
   }, []);
 
   return (
     <div>
-      <div>
-        {activeMessage}
-      </div>
+      {activeMessages?.map((message, index) => (
+          <div key={index}>
+            <p>{JSON.stringify(message)}</p>
+          </div>
+        )
+      )}
     </div>
   );
 };
